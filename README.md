@@ -45,32 +45,6 @@ var off = channel.on('page.ad.*.filled', function (msg, meta) {
 });
 ```
 
-If you like the pub/sub model better, we've aliased `subscribe` and `publish` as well:
-
-```js
-var channel = new Bus();
-
-channel.subscribe('metrics.#', function (msg) {
-  console.log(msg);
-});
-
-channel.publish('metrics.page.loaded', 'hello world');
-```
-
-And of course to unsubscribe, use the returned function:
-
-```js
-var unsubscribe = channel.subscribe('#', function (msg) {
-  console.log(Date.now(), msg);
-});
-
-for (var i = 0; i < 10; i++) {
-  channel.publish('welcome.' + i, 'hello world!');
-}
-
-unsubscribe();
-```
-
 ### How it works
 
 A Bus builds a directed graph of subscriptions.  As event topics are published, the graph discovers all the subscribers to notify and then caches the results for faster message publishing in the future.  When a new subscriber is added, the graph is modified and the subscriber cache is reset.
@@ -82,14 +56,14 @@ Supports same wildcards as Postal.js, such as:
 #### Zero or more words using `#`
 
 ```js
-channel.subscribe('#.changed', function (msg) {
+channel.on('#.changed', function (msg) {
   // ...
 });
 channel.emit('what.has.changed', event);
 ```
 
 ```js
-channel.subscribe('metrics.#.changed', function (msg) {
+channel.on('metrics.#.changed', function (msg) {
   // ...
 });
 channel.emit('metrics.something.important.has.changed', event);
@@ -98,7 +72,7 @@ channel.emit('metrics.something.important.has.changed', event);
 #### Single word using `*`
 
 ```js
-channel.subscribe('ads.slot.*.filled', function (msg) {
+channel.on('ads.slot.*.filled', function (msg) {
   // ...
 });
 channel.emit('ads.slot.post-nav.filled', {data, msg});

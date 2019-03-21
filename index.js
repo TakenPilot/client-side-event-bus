@@ -146,10 +146,6 @@ var Bus = (function () {
     this.emit = emit;
     this.on = on;
     this.history = getHistory;
-
-    // alias
-    this.publish = emit;
-    this.subscribe = on;
   };
 
   // public classes
