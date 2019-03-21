@@ -54,6 +54,34 @@ describe('exact matches', function () {
 
     sinon.assert.calledWith(spy, sinon.match.any, sinon.match(expected));
   });
+
+  it('sends timestamps', function () {
+    var bus = new Bus();
+    var spy = sinon.spy();
+
+    bus.on('a', spy);
+    bus.emit('a', {});
+
+    sinon.assert.calledWith(spy, sinon.match.any, sinon.match.has('ts'));
+  });
+
+  it('has timestamps that increase', function (done) {
+    var bus = new Bus();
+    var spy = sinon.spy();
+
+    bus.on('a', spy);
+    bus.emit('a', {});
+
+    setTimeout(function () {
+      try {
+        bus.emit('a', {});
+        expect(spy.firstCall.args[1].ts).to.be.below(spy.secondCall.args[1].ts);
+        done();
+      } catch (ex) {
+        done(ex)
+      }
+    });
+  });
 });
 
 describe('wildstar *', function () {

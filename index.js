@@ -132,7 +132,7 @@ var Bus = (function () {
       var ts = Date.now();
       historyCache.push([topicStr, ts]);
       var list = getCachedList(topicStr, head, emitCache);
-      var meta = {topic: topicStr};
+      var meta = {topic: topicStr, ts: ts};
 
       for (var i = 0; i < list.length; i++) {
         var fn = list[i];
