@@ -1,5 +1,5 @@
 {
-  "name": "@condenast/quick-bus",
+  "name": "quick-bus",
   "version": "0.2.0",
   "description": "A tiny and fast event bus with AMQP and Postal.js-like functionality",
   "main": "index.min.js",
@@ -22,18 +22,18 @@
   "author": "Dane Stuckel",
   "license": "LICENSE IN LICENSE",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "eslint": "^4.13.0",
-    "eslint-plugin-compat": "^2.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "karma": "^2.0.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.15.3",
+    "eslint-plugin-compat": "^3.0.1",
+    "eslint-plugin-import": "^2.16.0",
+    "karma": "^4.0.1",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^1.3.0",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sinon": "^1.0.5",
-    "mocha": "^4.1.0",
-    "sinon": "^4.1.4",
-    "uglify-js": "^3.3.5"
+    "mocha": "^6.0.2",
+    "sinon": "^7.3.0",
+    "uglify-js": "^3.5.1"
   },
   "files": [
     "index.min.js"

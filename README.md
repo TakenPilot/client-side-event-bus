@@ -1,12 +1,8 @@
-# Quick Bus 🚌
+# Client-side Event Bus
 
 A tiny event bus with AMQP and Postal.js-like functionality meant to be used on the client-side.
 
 [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](LICENSE)
-
-_Proudly built by:_
-
-<a href="https://technology.condenast.com"><img src="https://user-images.githubusercontent.com/1215971/35070721-3f136cdc-fbac-11e7-81b4-e3aa5cc70a17.png" title="Conde Nast Technology" width=350/></a>
 
 ### What is it?
 
@@ -146,6 +142,10 @@ These events are stored in a ring buffer, so old events will be dropped from the
 Note that this feature is designed for _metrics_, and often the information that people are interested in for metrics can be included as part of the topic.  For example, if you have a subscriber of `on('components.*.render.start')`, then you can have an infinite number of component ids such as `emit('components.abcdef.render.start')` and `emit('components.someRandomId.render.start')` without any additional complexity or performance penalty to the event bus.  If you're trying to access more information that can't be included as part of the topic, then you should make a subscriber and log that information.
 
 Look at our [Examples Page](https://github.com/CondeNast/quick-bus/blob/master/EXAMPLES.md) for some common code patterns with event buses.
+
+### This is a fork?
+
+Yes, this is a continuation of an open-source project that I did for Conde Nast called [Quick-bus](https://github.com/CondeNast/quick-bus).
 
 ### To Do
 
