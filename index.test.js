@@ -82,6 +82,72 @@ describe('exact matches', function () {
       }
     });
   });
+
+  it('allows exceptions from subscriptions to flow to emitter', function () {
+    var bus = new Bus();
+
+    bus.on('a', function () {
+      throw new Error('what')
+    });
+
+    expect(function () {
+      bus.emit('a', {});
+    }).to.throw('what')
+  });
+
+  it('allows exceptions from subscriptions to flow to error handler if it exists', function (done) {
+    var bus = new Bus();
+
+    bus.on('a', function () {
+      throw new Error('what')
+    });
+    bus.on('error', function (error) {
+      expect(error).to.be.an('error');
+      done();
+    });
+    bus.emit('a', {});
+  });
+
+  it('allows subscription results to flow to emitter', function () {
+    var bus = new Bus();
+    function fn() {
+      return 'what'
+    }
+
+    bus.on('a', fn);
+
+    expect(bus.emit('a', {})[0]).to.equal('what');
+  });
+
+  it('allows Promise.all to accept values', function () {
+    var bus = new Bus();
+    function fn() {
+      return 'what'
+    }
+
+    bus.on('a', fn);
+
+    var values = bus.emit('a', {});
+
+    return Promise.all(values).then(function (results) {
+      expect(results[0]).to.equal('what');
+    });
+  });
+
+  it('allows Promise.all to catch exceptions in Promises', function () {
+    var bus = new Bus();
+    function fn() {
+      return Promise.reject('test');
+    }
+
+    bus.on('a', fn);
+
+    var values = bus.emit('a', {});
+
+    return Promise.all(values).catch(function (errorText) {
+      expect(errorText).to.equal('test');
+    });
+  });
 });
 
 describe('wildstar *', function () {

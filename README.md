@@ -6,7 +6,7 @@ A tiny event bus with AMQP and Postal.js-like functionality meant to be used on 
 
 ### What is it?
 
-This is a simple event bus that replicates the basics of Postal.js in about 80 lines of code (minified to 773 bytes)
+This is a simple event bus that replicates the basics of Postal.js in about 150 lines of code (minified to 1337 bytes)
 
 It doesn't use lists of regex like Postal does but uses a directed graph instead, which is _much_ faster.
 
@@ -44,6 +44,40 @@ var off = channel.on('page.ad.*.filled', function (msg, meta) {
   console.log(meta.topic + 'just happened');
 });
 ```
+
+### Remote Procedure Calls (RPC)
+
+To support RPC-like functionality, we allow errors to propagate from subscribers back to publishers.
+
+To disable this, create a 'error' subscriber.
+
+```js 
+    bus.on('some.topic', function () {
+      //etc
+    });
+    bus.on('error', function (error) {
+      console.log('something bad happened', error);
+    });
+```
+
+We also pass back the results of the subscribers, which allows emitters to receive results.
+
+```js 
+    bus.on('some.topic', function () {
+      return 42;
+    });
+    const value = bus.emit('some.topic'); // will be 42
+```
+
+This also allows the emitter to wait until the subscribers are done async work by using Promises.
+
+```js 
+    bus.on('some.topic', function () {
+      return new Promise(etc);
+    });
+    await Promise.all(bus.emit('some.topic')); // will wait for promises to finish
+```
+
 
 ### How it works
 
@@ -117,22 +151,9 @@ Note that this feature is designed for _metrics_, and often the information that
 
 Look at our [Examples Page](https://github.com/CondeNast/quick-bus/blob/master/EXAMPLES.md) for some common code patterns with event buses.
 
-### This is a fork?
+### NOTICE
 
 Yes, this is a continuation of an open-source project that I did for Conde Nast called [Quick-bus](https://github.com/CondeNast/quick-bus).
-
-### To Do
-
-- Determine if the "meta" field from Postal.js should be included, or if that's just weight that the Promise API hates
-- Should we expose timing information or the ids of messages?
-- Would an async mechanism that would collect, buffer, or throttle messages be useful?  Would an event queue be used?
-- Are there other features of Postal that we actually use?
-
-### Future / Related architecture
-
-- Create helper library specialized in producing events from React
-- Create library to link into Browser events (Boomerang)
-- Create library to collect events and forward them to servers such as Sparrow, GA or BoomCatch.
 
 ### Related Documents
 

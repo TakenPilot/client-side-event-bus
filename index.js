@@ -120,7 +120,7 @@ var Bus = (function () {
       emitCache = {}; // forget graph lookups because everything has changed
 
       // return off() function to unsubscribe
-      return function () {
+      return function off() {
         var index = fnList.indexOf(fn);
         if (index > -1) {
           fnList.splice(index, 1);
@@ -132,14 +132,26 @@ var Bus = (function () {
       var ts = Date.now();
       historyCache.push([topicStr, ts]);
       var list = getCachedList(topicStr, head, emitCache);
+      var results = [];
       var meta = {topic: topicStr, ts: ts};
 
       for (var i = 0; i < list.length; i++) {
         var fn = list[i];
         for (var j = 0; j < fn.length; j++) {
-          fn[j](message, meta);
+          try {
+            results.push(fn[j](message, meta));
+          } catch (e) {
+            var errorList = getCachedList('error', head, emitCache);
+            if (errorList.length > 0) {
+              emit('error', e);
+            } else {
+              throw e;
+            }
+          }
         }
       }
+
+      return results;
     }
 
     // public methods
