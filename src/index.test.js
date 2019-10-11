@@ -1,3 +1,7 @@
+///<reference types="mocha"/>
+///<reference types="chai"/>
+///<reference types="sinon"/>
+
 describe('exact matches', function () {
   it('emits and receives', function () {
     var bus = new Bus();

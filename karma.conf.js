@@ -5,8 +5,8 @@ module.exports = function(config) {
     browsers: ['ChromeHeadless'],
     frameworks: ['mocha', 'sinon', 'chai'],
     files: [
-      'index.js',
-      'index.test.js'
+      'src/index.js',
+      'src/index.test.js'
     ]
   });
 };

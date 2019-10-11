@@ -51,7 +51,9 @@ var Bus = (function () {
 
     while (routes.length) {
       var route = routes.shift();
+      // @ts-ignore
       var cursor = route[0];
+      // @ts-ignore
       var index = route[1];
       var right = cursor.r;
       var word = topic[index];

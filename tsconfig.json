@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs":  true,
+    "checkJs": true,
+    "strictNullChecks": true,
+    "sourceMap": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "target": "ES6",
+    "outDir": "dist",
+    "baseUrl": "."
+  },
+  "include": ["./src/**/*"]
+}
