@@ -1,6 +1,6 @@
 {
   "name": "client-side-event-bus",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A tiny and fast event bus with AMQP and Postal.js-like functionality",
   "main": "index.min.js",
   "repository": "https://github.com/TakenPilot/client-side-event-bus.git",
