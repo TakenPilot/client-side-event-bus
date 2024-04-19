@@ -2,7 +2,7 @@
 
 A tiny pub/sub event bus.
 
-Ideal for browsers, embedded systems, lambdas or cloudFlare workers.
+Ideal for browsers, embedded systems, AWS Lambdas or CloudFlare workers.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -10,7 +10,7 @@ Features:
 
 - Topic-based routing
 - Trie-based wildcard subscriptions
-- Highly memory efficient and performant
+- Highly memory-efficient and performant
 - No dependencies
 - Self-contained in an IIFE
 - MUCH faster than regex-based routing
