@@ -1,28 +1,28 @@
 module.exports = {
-  plugins: ['compat'],
+  plugins: ["compat"],
   env: {
-    browser: true
+    browser: true,
   },
   rules: {
-    'compat/compat': 'error'
+    "compat/compat": "error",
   },
   globals: {
-    Bus: true
+    Bus: true,
   },
   overrides: [
     {
       env: {
         browser: true,
-        mocha: true
+        mocha: true,
       },
-      files: [ 'index.test.js' ],
+      files: ["index.test.js"],
       globals: {
         Bus: true,
         sinon: false,
         describe: false,
         it: false,
-        expect: false
-      }
-    }
-  ]
+        expect: false,
+      },
+    },
+  ],
 };
