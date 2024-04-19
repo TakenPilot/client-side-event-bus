@@ -2,7 +2,7 @@
   "name": "client-side-event-bus",
   "version": "0.5.0",
   "description": "A tiny and fast event bus with AMQP and Postal.js-like functionality",
-  "main": "index.min.js",
+  "main": "src/index.js",
   "repository": "https://github.com/TakenPilot/client-side-event-bus.git",
   "scripts": {
     "build": "uglifyjs --compress --mangle --output index.min.js -- src/index.js",
@@ -34,7 +34,7 @@
   },
   "files": [
     "src/index.d.ts",
-    "index.min.js"
+    "src/index.js"
   ],
   "types": "src/index.d.ts",
   "browserslist": [

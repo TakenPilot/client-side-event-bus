@@ -8,10 +8,17 @@ export as namespace Bus;
 // it's a class that can be imported
 export = Bus;
 
+interface Meta {
+  topic: string;
+  ts: Date;
+}
+
+type Callback = (message: any, meta: Meta) => void;
+
 declare class Bus implements ClientSideEventBus {
   constructor(sep: string | undefined);
 
-  on(topicStr: string, fn: () => void): () => void;
+  on(topicStr: string, fn: Callback): () => void;
   emit(topicStr: string, message?: any): Promise<any>[];
   history(topicStr: string): Record<string, number>[]
 }
