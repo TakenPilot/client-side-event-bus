@@ -1,6 +1,5 @@
 var Bus = (function () {
-  'use strict';
-
+  "use strict";
   var headCount = 0;
   var historyMax = 9999;
 
@@ -51,9 +50,7 @@ var Bus = (function () {
 
     while (routes.length) {
       var route = routes.shift();
-      // @ts-ignore
       var cursor = route[0];
-      // @ts-ignore
       var index = route[1];
       var right = cursor.r;
       var word = topic[index];
@@ -65,41 +62,43 @@ var Bus = (function () {
         routes.push([right[word], index + 1]);
       }
 
-      if (right['#']) {
+      if (right["#"]) {
         for (var i = index; i <= topic.length; i++) {
-          routes.push([right['#'], i]);
+          routes.push([right["#"], i]);
         }
       }
 
-      if (word && right['*']) {
-        routes.push([right['*'], index + 1]);
+      if (word && right["*"]) {
+        routes.push([right["*"], index + 1]);
       }
     }
 
     return finalRoutes;
   }
 
-  function getCachedList(topicStr, graph, cache) {
+  function getCachedList(topicStr, graph, cache, sep) {
     var list;
 
-    if (cache[topicStr]) { // use previous work if available
+    if (cache[topicStr]) {
+      // use previous work if available
       list = cache[topicStr];
     } else {
-      list = getList(topicStr.split('.'), graph);
+      list = getList(topicStr.split(sep), graph);
       cache[topicStr] = list; // remember previous work
     }
 
     return list;
   }
 
-  var Bus = function Bus() {
-    var head = { w: '', r: {}, i: headCount++ };
+  var Bus = function Bus(sep) {
+    sep = sep || ".";
+    var head = { w: "", r: {}, i: headCount++ };
     var emitCache = {}; // memoize graph lookups
     var historyCache = new Ring(historyMax);
 
     function getHistory(topicStr) {
-      var partialGraph = { w: '', r: {}, i: headCount++ };
-      var lastNode = add(topicStr.split('.'), partialGraph);
+      var partialGraph = { w: "", r: {}, i: headCount++ };
+      var lastNode = add(topicStr.split(sep), partialGraph);
       lastNode.fn = 1;
       var timeline = [];
       var cache = {};
@@ -107,7 +106,7 @@ var Bus = (function () {
 
       for (var i = 0; i < log.length; i++) {
         var entry = log[i];
-        if(getCachedList(entry[0], partialGraph, cache).length) {
+        if (getCachedList(entry[0], partialGraph, cache, sep).length) {
           timeline.push(entry);
         }
       }
@@ -115,7 +114,7 @@ var Bus = (function () {
     }
 
     function on(topicStr, fn) {
-      var lastNode = add(topicStr.split('.'), head);
+      var lastNode = add(topicStr.split(sep), head);
       var fnList = lastNode.fn || [];
       fnList.push(fn);
       lastNode.fn = fnList;
@@ -127,15 +126,15 @@ var Bus = (function () {
         if (index > -1) {
           fnList.splice(index, 1);
         }
-      }
+      };
     }
 
     function emit(topicStr, message) {
       var ts = Date.now();
       historyCache.push([topicStr, ts]);
-      var list = getCachedList(topicStr, head, emitCache);
+      var list = getCachedList(topicStr, head, emitCache, sep);
       var results = [];
-      var meta = {topic: topicStr, ts: ts};
+      var meta = { topic: topicStr, ts: ts };
 
       for (var i = 0; i < list.length; i++) {
         var fn = list[i];
@@ -143,9 +142,9 @@ var Bus = (function () {
           try {
             results.push(fn[j](message, meta));
           } catch (e) {
-            var errorList = getCachedList('error', head, emitCache);
+            var errorList = getCachedList("error", head, emitCache, sep);
             if (errorList.length > 0) {
-              emit('error', e);
+              emit("error", e);
             } else {
               throw e;
             }
@@ -166,8 +165,11 @@ var Bus = (function () {
   Bus.Ring = Ring;
 
   return Bus;
-}());
+})();
 
-if (typeof exports !== 'undefined') {
+if (typeof exports !== "undefined") {
   module.exports = Bus;
+}
+if (typeof window !== "undefined") {
+  window.Bus = Bus;
 }

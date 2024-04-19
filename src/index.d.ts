@@ -1,7 +1,7 @@
 // Type definitions for client-side-event-bus
 
 // it's a global when in non-module environments
-import {ClientSideEventBus} from "./index";
+import { ClientSideEventBus } from "./index";
 
 export as namespace Bus;
 
@@ -9,7 +9,7 @@ export as namespace Bus;
 export = Bus;
 
 declare class Bus implements ClientSideEventBus {
-  constructor();
+  constructor(sep: string | undefined);
 
   on(topicStr: string, fn: () => void): () => void;
   emit(topicStr: string, message?: any): Promise<any>[];
