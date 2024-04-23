@@ -22,6 +22,10 @@ Subscriptions build a directed graph of tokens. Emitted events tranverse the gra
 
 ## How to use
 
+```bash
+npm i --save @takenpilot/client-side-event-bus
+```
+
 Getting started with the Client-side Event Bus is quick and easy. Simply use `emit` and `on` methods like a regular event emitter:
 
 ```js
