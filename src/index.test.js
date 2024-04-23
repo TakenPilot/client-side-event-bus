@@ -434,7 +434,6 @@ describe("unsubscribe", function () {
 describe("history", function () {
   it("no events and no entries gives no history", function () {
     var bus = new Bus();
-    var spy = sinon.spy();
 
     expect(bus.history("a").length).to.equal(0);
   });
@@ -449,7 +448,6 @@ describe("history", function () {
 
   it("wildcard * gives selective history", function () {
     var bus = new Bus();
-    var spy = sinon.spy();
 
     bus.emit("a");
     bus.emit("a.b");
@@ -460,7 +458,6 @@ describe("history", function () {
 
   it("wildcard # gives selective history", function () {
     var bus = new Bus();
-    var spy = sinon.spy();
 
     bus.emit("a");
     bus.emit("a.b");
@@ -472,7 +469,6 @@ describe("history", function () {
 
   it("wildcard * with sep gives selective history", function () {
     var bus = new Bus("/");
-    var spy = sinon.spy();
 
     bus.emit("a");
     bus.emit("a/b");

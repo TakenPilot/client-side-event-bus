@@ -1,29 +1,28 @@
 # Client-side Event Bus
 
-A tiny pub/sub event bus.
+Client-side communication with a lightweight and lightning-fast event bus.
 
-Ideal for browsers, embedded systems, AWS Lambdas or CloudFlare workers.
+The Client-side Event Bus is a tiny pub/sub event bus designed for seamless communication in various environments, including browsers, embedded systems, AWS Lambdas, or CloudFlare workers. Whether you're building a dynamic web application or orchestrating microservices, this event bus simplifies message handling and enhances inter-component communication.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-Features:
+Key Features:
 
-- Topic-based routing
-- Trie-based wildcard subscriptions
-- Highly memory-efficient and performant
-- No dependencies
-- Self-contained in an IIFE
-- MUCH faster than regex-based routing
+- **Topic-based Routing**: Effortlessly route messages based on custom topics.
+- **Wildcard Subscriptions**: Use trie-based wildcard subscriptions for flexible event handling.
+- **Memory-efficient and Performant**: Optimize memory usage and achieve high performance with our streamlined implementation.
+- **No Dependencies**: Enjoy hassle-free integration without worrying about additional dependencies.
+- **Self-contained in an IIFE**: Encapsulate functionality within an Immediately Invoked Function Expression (IIFE) for easy deployment.
+- **Faster Than Regex-based Routing**: Benefit from faster event routing compared to regex-based alternatives.
+- **Browser Compatibility 8 Years+**: Ensure broad compatibility with modern and legacy browsers alike.
 
-### What is it?
-
-A simple event bus that replicates the basics of a message broker in about 170 lines of code minified to 1437 bytes.
+This is a simple event bus that replicates the basics of a message broker in about 170 lines of code minified to 1437 bytes.
 
 Subscriptions build a directed graph of tokens. Emitted events tranverse the graph to find subscriber functions to trigger.
 
-### How to use
+## How to use
 
-Use `emit` and `on` like a regular event emitter.
+Getting started with the Client-side Event Bus is quick and easy. Simply use `emit` and `on` methods like a regular event emitter:
 
 ```js
 var channel = new Bus();
@@ -33,7 +32,7 @@ channel.on("metrics.#", (msg) => console.log(msg));
 channel.emit("metrics.page.loaded", "hello world");
 ```
 
-Use the returned function to unsubscribe from events.
+Need to unsubscribe from events? No problem. Use the returned function:
 
 ```js
 var off = channel.on("page.load.justOnce", (msg) => {
@@ -42,7 +41,7 @@ var off = channel.on("page.load.justOnce", (msg) => {
 });
 ```
 
-The second parameter has the topic that triggered the event.
+Gain insights into triggered events with the second parameter:
 
 ```js
 var off = channel.on("page.ad.*.filled", (msg, meta) => {
@@ -50,22 +49,20 @@ var off = channel.on("page.ad.*.filled", (msg, meta) => {
 });
 ```
 
-### Remote Procedure Calls (RPC)
+## Error Propagation and Results
 
-To support RPC-like functionality, we allow errors to propagate from subscribers back to publishers.
-
-To disable this, create an 'error' subscriber.
+Support RPC-like functionality by allowing errors to propagate from subscribers back to publishers. Easily disable this feature by creating an 'error' subscriber:
 
 ```js
 bus.on("some.topic", () => {
-  //etc
+  // ...
 });
 bus.on("error", (error) => {
-  console.log("something bad happened", error);
+  console.log("something happened", error);
 });
 ```
 
-Results are returned from subscribers, allowing emitters to receive Promises.
+Retrieve results from subscribers, enabling emitters to receive Promises:
 
 ```js
 bus.on("some.topic", () => Promise.resolve(42));
@@ -81,7 +78,9 @@ bus.on("some.topic", () => 42);
 bus.emit("some.topic").length; // 1
 ```
 
-### Zero or more words wildcard: `#`
+## Zero or more words wildcard: `#`
+
+Match any number of words in a topic.
 
 ```js
 channel.on("#.changed", (msg) => {
@@ -97,7 +96,9 @@ channel.on("metrics.#.changed", (msg) => {
 channel.emit("metrics.something.important.has.changed", event);
 ```
 
-#### Single word wildcard: `*`
+## Single word wildcard: `*`
+
+Match a single word in a topic.
 
 ```js
 channel.on("ads.slot.*.filled", (msg) => {
@@ -106,28 +107,18 @@ channel.on("ads.slot.*.filled", (msg) => {
 channel.emit("ads.slot.post-nav.filled", { data, msg });
 ```
 
-### History
+## History
 
-A history of event names with timestamps is kept in a ring buffer. It's meant to be used for performance optimization and debugging distributed systems.
+Keep track of event names and timestamps with a built-in history feature. Useful for performance optimization and debugging distributed systems, the history feature is ideal for tracking early page loading events and UI interactions.
 
-This is especially useful for iframe messages, loading scripts, and other UI events that are difficult to track in the console. This library is so small and light that it is ideal for tracking early page loading events, especially where the order of events is important such as React renders.
-
-They can be queried with the `history` method:
+Query the history using the history method:
 
 ```js
 var channel = new Bus();
 
 channel.emit("ads.slot.post-nav.filled", { data, msg });
-channel.emit("ads.slot.side-rail.filled", { thing, stuff });
-channel.emit("ads.slot.instream-banner-0.filled", { a, b });
-channel.emit("metrics.component.absdf2324.render.start", { etc, ie });
-channel.emit("metrics.component.absdf2324.render.end", { etc, ie });
 
-// gets the ad slots that were filled
 var history = channel.history("ads.slot.*.filled");
-
-// gets history of components rendering
-var history = channel.history("metrics.component.*.render.*");
 ```
 
 The format is an array of arrays. For example:
@@ -142,20 +133,16 @@ The format is an array of arrays. For example:
 ]
 ```
 
-The message/payload is not stored in the history to prevent potential memory leaks and scoping issues.
+## Explore Examples and More
 
-Note that this feature is designed for _metrics_, and often the information that people are interested in for metrics can be included as part of the topic.
+Visit our [Examples Page](https://github.com/takenpilot/client-side-event-bus/blob/master/EXAMPLES.md) for common code patterns and use cases with event buses.
 
-For example, imagine tracking component render speed. Simply use events such as `emit('components.MyComponentName.render.start')` or `emit('components.SomeRandomId.render.start')`. You could then query `components.*.render.start` to get all render start events for all components along with timestamps.
+## Related Documents
 
-Look at our [Examples Page](https://github.com/CondeNast/quick-bus/blob/master/EXAMPLES.md) for some common code patterns with event buses.
+- [License - MIT](https://github.com/takenpilot/client-side-event-bus/blob/master/LICENSE.md)
+- [Code of Conduct - Contributor Covenant v1.4](https://github.com/takenpilot/client-side-event-bus/blob/master/CODE_OF_CONDUCT.md)
+- [Contributing Guidelines - Atom and Rails](https://github.com/takenpilot/client-side-event-bus/blob/master/CONTRIBUTING.md)
 
-### Related Documents
-
-- [License - MIT](https://github.com/CondeNast/quick-bus/blob/master/LICENSE.md)
-- [Code of Conduct - Contributor Covenant v1.4](https://github.com/CondeNast/quick-bus/blob/master/CODE_OF_CONDUCT.md)
-- [Contributing Guidelines - Atom and Rails](https://github.com/CondeNast/quick-bus/blob/master/CONTRIBUTING.md)
-
-### Related Topics
+## Related Topics
 
 - [RabbitMX Topic Exchange tutorial explaining \* and # wildcards](https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html)

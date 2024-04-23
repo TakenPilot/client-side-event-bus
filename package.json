@@ -1,12 +1,13 @@
 {
-  "name": "client-side-event-bus",
-  "version": "0.5.0",
-  "description": "A tiny and fast event bus with AMQP and Postal.js-like functionality",
+  "name": "@takenpilot/client-side-event-bus",
+  "version": "1.0.0",
+  "description": "A lightweight event bus for client-side JavaScript, inspired by AMQP and Postal.js. Easily manage communication between components with a simple and efficient pub/sub architecture.",
+  "documentation": "https://github.com/TakenPilot/client-side-event-bus#readme",
   "main": "index.min.js",
   "repository": "https://github.com/TakenPilot/client-side-event-bus.git",
   "scripts": {
     "build": "uglifyjs --compress --mangle --output index.min.js -- src/index.js",
-    "lint": "eslint .",
+    "lint": "eslint -c ./src/.eslintrc.json ./src/",
     "test": "npm run lint && npm run web-test-runner",
     "web-test-runner": "npx web-test-runner --playwright --browsers chromium firefox webkit --config=./web-test-runner.config.mjs",
     "prepublish": "npm run lint && npm test -- --single-run && npm run build"
@@ -38,6 +39,9 @@
   ],
   "types": "src/index.d.ts",
   "browserslist": [
-    "last 4 years"
-  ]
+    "last 8 years"
+  ],
+  "engines": {
+    "node": ">=10.0.0"
+  }
 }

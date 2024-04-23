@@ -1,0 +1,37 @@
+{
+  "extends": ["eslint:recommended", "plugin:compat/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 5, // Set the appropriate ECMAScript version for compatibility
+    "sourceType": "script" // Specify CommonJS module syntax
+  },
+  "env": {
+    "browser": true // If the code is intended for a browser environment
+  },
+  "overrides": [
+    {
+      "files": ["./index.js"],
+      "env": {
+        "browser": true,
+        "node": true
+      },
+      "plugins": ["compat"],
+      "rules": {
+        "compat/compat": "error"
+      }
+    },
+    {
+      "files": ["./index.test.js"],
+      "env": {
+        "browser": true
+      },
+      "globals": {
+        "Bus": true,
+        "sinon": false,
+        "describe": false,
+        "it": false,
+        "expect": false,
+        "Promise": false
+      }
+    }
+  ]
+}
